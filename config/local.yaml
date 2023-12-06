@@ -1,0 +1,13 @@
+env: "local" # "dev", "prod"
+
+http_server:
+  port: 8080
+  timeout: 5s
+  idle_timeout: 30s
+
+postgres:
+  host: db
+  username: postgres
+  password: postgres
+  dbname: todo_service_db
+  port: 5432

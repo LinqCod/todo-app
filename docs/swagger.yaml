@@ -1,0 +1,217 @@
+basePath: /api/v1
+definitions:
+  github_com_linqcod_todo-app_internal_domain.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  github_com_linqcod_todo-app_internal_domain.SuccessResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  github_com_linqcod_todo-app_internal_domain.SuccessWithDataResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
+  github_com_linqcod_todo-app_internal_domain.Task:
+    properties:
+      assigned_date:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      is_completed:
+        type: boolean
+      title:
+        type: string
+    required:
+    - assigned_date
+    - description
+    - title
+    type: object
+  github_com_linqcod_todo-app_internal_domain.UpdateTaskRequest:
+    properties:
+      assigned_date:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      is_completed:
+        type: boolean
+      title:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: linqcod@yandex.ru
+    name: linqcod
+  description: todo service
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: TODO API
+  version: "1.0"
+paths:
+  /tasks:
+    get:
+      description: get tasks with filters and pagination
+      parameters:
+      - description: tasks pagination offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: tasks pagination limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: task assigned date
+        in: query
+        name: date
+        required: true
+        type: string
+      - description: status of task
+        in: query
+        name: isCompleted
+        required: true
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task updated successfully
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.SuccessWithDataResponse'
+        "400":
+          description: error bad request data
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.ErrorResponse'
+        "500":
+          description: error while getting filtered tasks
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.ErrorResponse'
+      summary: get tasks with filters and pagination
+      tags:
+      - tasks
+    post:
+      consumes:
+      - application/json
+      description: create task
+      parameters:
+      - description: Create task
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.Task'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Task created successfully
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.SuccessResponse'
+        "400":
+          description: error bad request data
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.ErrorResponse'
+        "500":
+          description: error while creating task
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.ErrorResponse'
+      summary: create task
+      tags:
+      - tasks
+  /tasks/{id}:
+    delete:
+      description: delete task
+      parameters:
+      - description: Task id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task deleted successfully
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.SuccessResponse'
+        "400":
+          description: error bad request data
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.ErrorResponse'
+        "500":
+          description: error while deleting task
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.ErrorResponse'
+      summary: delete task
+      tags:
+      - tasks
+    get:
+      description: get task by id
+      parameters:
+      - description: Task id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task got successfully
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.SuccessWithDataResponse'
+        "400":
+          description: error bad request data
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.ErrorResponse'
+        "500":
+          description: error while getting task by id
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.ErrorResponse'
+      summary: get task by id
+      tags:
+      - tasks
+    patch:
+      description: update task
+      parameters:
+      - description: Task id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update task
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.UpdateTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task updated successfully
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.SuccessWithDataResponse'
+        "400":
+          description: error bad request data
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.ErrorResponse'
+        "500":
+          description: error while updating task
+          schema:
+            $ref: '#/definitions/github_com_linqcod_todo-app_internal_domain.ErrorResponse'
+      summary: update task
+      tags:
+      - tasks
+swagger: "2.0"
